@@ -1,0 +1,405 @@
+{
+  "nota_NF-20260001.pdf": {
+    "tipo": "fatura",
+    "numero": "NF-20260001",
+    "fornecedor": "Laticínios Serra Azul ME",
+    "cnpj": "00.587.901/0001-52",
+    "categoria": "insumos",
+    "data_emissao": "2026-09-21",
+    "vencimento": "2026-09-28",
+    "itens": [
+      {
+        "descricao": "Manteiga kg",
+        "quantidade": 2,
+        "preco_unitario": 52.0,
+        "subtotal": 104.0
+      },
+      {
+        "descricao": "Queijo muçarela kg",
+        "quantidade": 9,
+        "preco_unitario": 38.5,
+        "subtotal": 346.5
+      }
+    ],
+    "valor_total": 450.5,
+    "problemas_esperados": []
+  },
+  "nota_NF-20260002.pdf": {
+    "tipo": "fatura",
+    "numero": "NF-20260002",
+    "fornecedor": "TecnoPonto Sistemas",
+    "cnpj": "00.950.473/0001-18",
+    "categoria": "software",
+    "data_emissao": "2026-09-24",
+    "vencimento": "2026-10-01",
+    "itens": [
+      {
+        "descricao": "Licença PDV mensal",
+        "quantidade": 1,
+        "preco_unitario": 189.9,
+        "subtotal": 189.9
+      }
+    ],
+    "valor_total": 189.9,
+    "problemas_esperados": []
+  },
+  "nota_NF-20260003.pdf": {
+    "tipo": "fatura",
+    "numero": "NF-20260003",
+    "fornecedor": "Limpeza Total Serviços",
+    "cnpj": "00.218.664/0001-31",
+    "categoria": "servicos",
+    "data_emissao": "2026-09-06",
+    "vencimento": "2026-09-13",
+    "itens": [
+      {
+        "descricao": "Limpeza semanal",
+        "quantidade": 1,
+        "preco_unitario": 480.0,
+        "subtotal": 480.0
+      },
+      {
+        "descricao": "Higienização de coifa",
+        "quantidade": 1,
+        "preco_unitario": 650.0,
+        "subtotal": 650.0
+      }
+    ],
+    "valor_total": 1130.0,
+    "problemas_esperados": []
+  },
+  "nota_NF-20260004.pdf": {
+    "tipo": "fatura",
+    "numero": "NF-20260004",
+    "fornecedor": "Limpeza Total Serviços",
+    "cnpj": "00.218.664/0001-31",
+    "categoria": "servicos",
+    "data_emissao": "2026-10-06",
+    "vencimento": "2026-10-20",
+    "itens": [
+      {
+        "descricao": "Limpeza semanal",
+        "quantidade": 1,
+        "preco_unitario": 480.0,
+        "subtotal": 480.0
+      }
+    ],
+    "valor_total": 480.0,
+    "problemas_esperados": []
+  },
+  "nota_NF-20260005.pdf": {
+    "tipo": "fatura",
+    "numero": "NF-20260005",
+    "fornecedor": "Gás Rápido Distribuidora",
+    "cnpj": "00.364.285/0001-76",
+    "categoria": "utilidades",
+    "data_emissao": "2026-10-11",
+    "vencimento": "2026-10-18",
+    "itens": [
+      {
+        "descricao": "Botijão P45",
+        "quantidade": 1,
+        "preco_unitario": 389.0,
+        "subtotal": 389.0
+      },
+      {
+        "descricao": "Taxa de entrega",
+        "quantidade": 1,
+        "preco_unitario": 25.0,
+        "subtotal": 25.0
+      }
+    ],
+    "valor_total": 414.0,
+    "problemas_esperados": []
+  },
+  "nota_NF-20260006.pdf": {
+    "tipo": "fatura",
+    "numero": "NF-20260006",
+    "fornecedor": "Hortifruti Vale Verde Ltda",
+    "cnpj": "00.412.338/0001-07",
+    "categoria": "insumos",
+    "data_emissao": "2026-09-15",
+    "vencimento": "2026-10-06",
+    "itens": [
+      {
+        "descricao": "Cebola kg",
+        "quantidade": 3,
+        "preco_unitario": 5.2,
+        "subtotal": 15.6
+      },
+      {
+        "descricao": "Batata kg",
+        "quantidade": 9,
+        "preco_unitario": 6.4,
+        "subtotal": 57.6
+      },
+      {
+        "descricao": "Alface unid",
+        "quantidade": 2,
+        "preco_unitario": 3.1,
+        "subtotal": 6.2
+      }
+    ],
+    "valor_total": 79.4,
+    "problemas_esperados": []
+  },
+  "nota_NF-20260007.pdf": {
+    "tipo": "fatura",
+    "numero": "NF-20260007",
+    "fornecedor": "Gás Rápido Distribuidora",
+    "cnpj": "00.364.285/0001-76",
+    "categoria": "utilidades",
+    "data_emissao": "2026-10-06",
+    "vencimento": "2026-10-20",
+    "itens": [
+      {
+        "descricao": "Botijão P45",
+        "quantidade": 1,
+        "preco_unitario": 389.0,
+        "subtotal": 389.0
+      }
+    ],
+    "valor_total": 389.0,
+    "problemas_esperados": []
+  },
+  "nota_NF-20260008.pdf": {
+    "tipo": "fatura",
+    "numero": "NF-20260008",
+    "fornecedor": "Hortifruti Vale Verde Ltda",
+    "cnpj": "00.412.338/0001-07",
+    "categoria": "insumos",
+    "data_emissao": "2026-09-24",
+    "vencimento": "2026-10-22",
+    "itens": [
+      {
+        "descricao": "Tomate italiano kg",
+        "quantidade": 10,
+        "preco_unitario": 7.9,
+        "subtotal": 79.0
+      },
+      {
+        "descricao": "Alface unid",
+        "quantidade": 4,
+        "preco_unitario": 3.1,
+        "subtotal": 12.4
+      },
+      {
+        "descricao": "Batata kg",
+        "quantidade": 8,
+        "preco_unitario": 6.4,
+        "subtotal": 51.2
+      }
+    ],
+    "valor_total": 142.6,
+    "problemas_esperados": []
+  },
+  "nota_NF-20260009.pdf": {
+    "tipo": "fatura",
+    "numero": "NF-20260009",
+    "fornecedor": "Embalagens Prisma Ltda",
+    "cnpj": "00.733.120/0001-90",
+    "categoria": "embalagens",
+    "data_emissao": "2026-10-20",
+    "vencimento": "2026-11-03",
+    "itens": [
+      {
+        "descricao": "Sacola papel (pct 100)",
+        "quantidade": 6,
+        "preco_unitario": 47.5,
+        "subtotal": 285.0
+      },
+      {
+        "descricao": "Copo 300ml (pct 100)",
+        "quantidade": 5,
+        "preco_unitario": 29.9,
+        "subtotal": 149.5
+      }
+    ],
+    "valor_total": 434.5,
+    "problemas_esperados": []
+  },
+  "fatura_NF-20260010.docx": {
+    "tipo": "fatura",
+    "numero": "NF-20260010",
+    "fornecedor": "Laticínios Serra Azul ME",
+    "cnpj": "00.587.901/0001-52",
+    "categoria": "insumos",
+    "data_emissao": "2026-10-21",
+    "vencimento": "2026-11-18",
+    "itens": [
+      {
+        "descricao": "Queijo muçarela kg",
+        "quantidade": 9,
+        "preco_unitario": 38.5,
+        "subtotal": 346.5
+      },
+      {
+        "descricao": "Manteiga kg",
+        "quantidade": 8,
+        "preco_unitario": 52.0,
+        "subtotal": 416.0
+      },
+      {
+        "descricao": "Leite integral L",
+        "quantidade": 6,
+        "preco_unitario": 4.9,
+        "subtotal": 29.4
+      }
+    ],
+    "valor_total": 791.9,
+    "problemas_esperados": []
+  },
+  "fatura_NF-20260011.docx": {
+    "tipo": "fatura",
+    "numero": "NF-20260011",
+    "fornecedor": "TecnoPonto Sistemas",
+    "cnpj": "00.950.473/0001-18",
+    "categoria": "software",
+    "data_emissao": "2026-09-19",
+    "vencimento": "2026-10-17",
+    "itens": [
+      {
+        "descricao": "Licença PDV mensal",
+        "quantidade": 1,
+        "preco_unitario": 189.9,
+        "subtotal": 189.9
+      }
+    ],
+    "valor_total": 189.9,
+    "problemas_esperados": []
+  },
+  "fatura_NF-20260012.docx": {
+    "tipo": "fatura",
+    "numero": "NF-20260012",
+    "fornecedor": "Embalagens Prisma Ltda",
+    "cnpj": "00.733.120/0001-90",
+    "categoria": "embalagens",
+    "data_emissao": "2026-09-11",
+    "vencimento": "2026-09-18",
+    "itens": [
+      {
+        "descricao": "Copo 300ml (pct 100)",
+        "quantidade": 7,
+        "preco_unitario": 29.9,
+        "subtotal": 209.3
+      }
+    ],
+    "valor_total": 209.3,
+    "problemas_esperados": []
+  },
+  "email_cobranca_NF-20260013.txt": {
+    "tipo": "fatura",
+    "numero": "NF-20260013",
+    "fornecedor": "Hortifruti Vale Verde Ltda",
+    "cnpj": "00.412.338/0001-07",
+    "categoria": "insumos",
+    "data_emissao": "2026-10-13",
+    "vencimento": "2026-11-10",
+    "itens": [
+      {
+        "descricao": "Alface unid",
+        "quantidade": 10,
+        "preco_unitario": 3.1,
+        "subtotal": 31.0
+      },
+      {
+        "descricao": "Cebola kg",
+        "quantidade": 8,
+        "preco_unitario": 5.2,
+        "subtotal": 41.6
+      },
+      {
+        "descricao": "Batata kg",
+        "quantidade": 10,
+        "preco_unitario": 6.4,
+        "subtotal": 64.0
+      }
+    ],
+    "valor_total": 136.6,
+    "problemas_esperados": []
+  },
+  "email_cobranca_NF-20260014.txt": {
+    "tipo": "fatura",
+    "numero": "NF-20260014",
+    "fornecedor": "Hortifruti Vale Verde Ltda",
+    "cnpj": "00.412.338/0001-07",
+    "categoria": "insumos",
+    "data_emissao": "2026-09-05",
+    "vencimento": "2026-09-12",
+    "itens": [
+      {
+        "descricao": "Batata kg",
+        "quantidade": 11,
+        "preco_unitario": 6.4,
+        "subtotal": 70.4
+      },
+      {
+        "descricao": "Alface unid",
+        "quantidade": 2,
+        "preco_unitario": 3.1,
+        "subtotal": 6.2
+      }
+    ],
+    "valor_total": 76.6,
+    "problemas_esperados": []
+  },
+  "reenvio_NF-20260003.pdf": {
+    "tipo": "fatura",
+    "numero": "NF-20260003",
+    "fornecedor": "Limpeza Total Serviços",
+    "cnpj": "00.218.664/0001-31",
+    "categoria": "servicos",
+    "data_emissao": "2026-09-06",
+    "vencimento": "2026-09-13",
+    "itens": [
+      {
+        "descricao": "Limpeza semanal",
+        "quantidade": 1,
+        "preco_unitario": 480.0,
+        "subtotal": 480.0
+      },
+      {
+        "descricao": "Higienização de coifa",
+        "quantidade": 1,
+        "preco_unitario": 650.0,
+        "subtotal": 650.0
+      }
+    ],
+    "valor_total": 1130.0,
+    "problemas_esperados": [
+      "duplicada"
+    ]
+  },
+  "nota_NF-20260099.pdf": {
+    "tipo": "fatura",
+    "numero": "NF-20260099",
+    "fornecedor": "Gás Rápido Distribuidora",
+    "cnpj": "00.364.285/0001-76",
+    "categoria": "utilidades",
+    "data_emissao": "2026-09-21",
+    "vencimento": "2026-10-12",
+    "itens": [
+      {
+        "descricao": "Taxa de entrega",
+        "quantidade": 1,
+        "preco_unitario": 25.0,
+        "subtotal": 25.0
+      },
+      {
+        "descricao": "Botijão P45",
+        "quantidade": 1,
+        "preco_unitario": 389.0,
+        "subtotal": 389.0
+      }
+    ],
+    "valor_total": 564.0,
+    "soma_itens": 414.0,
+    "problemas_esperados": [
+      "total_divergente"
+    ]
+  },
+  "contrato_limpeza.pdf": {
+    "tipo": "contrato",
+    "problemas_esperados": []
+  }
+}

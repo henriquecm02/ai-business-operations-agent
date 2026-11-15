@@ -1,0 +1,133 @@
+{
+  "data": "20261115-2055",
+  "modelo": "gemini-3.5-flash-lite",
+  "rodadas": 1,
+  "prompts": {
+    "system": "v1",
+    "extract": "v1",
+    "reviewer": "v1"
+  },
+  "extracao": {
+    "acuracia_campos": {
+      "media": 0.96,
+      "min": 0.9612,
+      "max": 0.9612
+    },
+    "acuracia_itens": {
+      "media": 0.84,
+      "min": 0.8387,
+      "max": 0.8387
+    },
+    "segundos": {
+      "media": 26.69,
+      "min": 26.69,
+      "max": 26.69
+    },
+    "problemas_detectados": [
+      2
+    ],
+    "problemas_esperados": 2,
+    "rodadas": [
+      {
+        "documentos": 17,
+        "erros": [],
+        "segundos": 26.69,
+        "acuracia_campos": 0.9612,
+        "acuracia_por_campo": {
+          "tipo": 1.0,
+          "numero": 1.0,
+          "fornecedor": 0.6875,
+          "cnpj": 1.0,
+          "data_emissao": 1.0,
+          "vencimento": 1.0,
+          "valor_total": 1.0,
+          "categoria": 1.0
+        },
+        "acuracia_itens": 0.8387,
+        "problemas_esperados": 2,
+        "problemas_detectados": 2,
+        "falsos_alertas": [
+          [
+            "email_cobranca_NF-20260013.txt",
+            "total_divergente"
+          ],
+          [
+            "email_cobranca_NF-20260014.txt",
+            "total_divergente"
+          ]
+        ],
+        "divergencias": [
+          {
+            "arquivo": "fatura_NF-20260010.docx",
+            "campo": "fornecedor",
+            "esperado": "Laticínios Serra Azul ME (fictícia)",
+            "obtido": "Laticínios Serra Azul ME"
+          },
+          {
+            "arquivo": "fatura_NF-20260011.docx",
+            "campo": "fornecedor",
+            "esperado": "TecnoPonto Sistemas (fictícia)",
+            "obtido": "TecnoPonto Sistemas"
+          },
+          {
+            "arquivo": "fatura_NF-20260012.docx",
+            "campo": "fornecedor",
+            "esperado": "Embalagens Prisma Ltda (fictícia)",
+            "obtido": "Embalagens Prisma Ltda"
+          },
+          {
+            "arquivo": "email_cobranca_NF-20260013.txt",
+            "campo": "fornecedor",
+            "esperado": "Hortifruti Vale Verde Ltda (fictícia)",
+            "obtido": "Hortifruti Vale Verde Ltda"
+          },
+          {
+            "arquivo": "email_cobranca_NF-20260014.txt",
+            "campo": "fornecedor",
+            "esperado": "Hortifruti Vale Verde Ltda (fictícia)",
+            "obtido": "Hortifruti Vale Verde Ltda"
+          }
+        ]
+      }
+    ]
+  },
+  "agente": {
+    "taxa_sucesso": 1.0,
+    "segundos": {
+      "media": 42.26,
+      "min": 42.26,
+      "max": 42.26
+    },
+    "chamadas_llm": {
+      "media": 13,
+      "min": 13,
+      "max": 13
+    },
+    "tokens": {
+      "media": 53790,
+      "min": 53790,
+      "max": 53790
+    },
+    "rodadas": [
+      {
+        "sucesso": true,
+        "segundos": 42.26,
+        "passos_llm": 8,
+        "chamadas_llm": 13,
+        "tokens": 53790,
+        "arquivos": [
+          "analise_financeira_2026.xlsx",
+          "grafico_categoria.png",
+          "grafico_fornecedor.png",
+          "grafico_mes.png",
+          "relatorio_executivo.docx",
+          "relatorio_executivo.md"
+        ],
+        "revisao_aprovada": true,
+        "valores_nao_comprovados_no_relatorio": [],
+        "relatorio_cita_duplicata": true,
+        "relatorio_cita_divergencia": true
+      }
+    ]
+  }
+}

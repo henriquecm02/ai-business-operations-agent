@@ -1,0 +1,14 @@
+De: financeiro@exemplo.invalid
+Assunto: Cobrança NF-20260014
+
+Olá! Segue a cobrança referente ao pedido de 05/09/2026.
+
+Emitente: Hortifruti Vale Verde Ltda (CNPJ 00.412.338/0001-07)
+Itens:
+  - 11x Batata kg (R$ 70,40)
+  - 2x Alface unid (R$ 6,20)
+
+Total: R$ 76,60. Favor pagar até 12/09/2026 via PIX.
+
+Atenciosamente,
+Equipe financeira

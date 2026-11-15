@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "opsagent"
+version = "0.1.0"
+description = "Agente de IA que transforma uma pasta de documentos em planilha, gráficos e relatório executivo."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+dependencies = [
+  "google-genai>=1.0",
+  "pypdf>=4",
+  "python-docx>=1.1",
+  "openpyxl>=3.1",
+  "pandas>=2.1",
+  "matplotlib>=3.8",
+  "python-dotenv>=1.0",
+]
+
+[project.optional-dependencies]
+ui = ["streamlit>=1.35"]
+mcp = ["mcp>=2"]
+dev = ["pytest>=8", "reportlab>=4"]
+
+[project.scripts]
+opsagent = "opsagent.cli:main"
+opsagent-mcp = "opsagent.mcp_server:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+opsagent = ["prompts/*.md"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
