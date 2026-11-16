@@ -16,7 +16,7 @@ from pathlib import Path
 from typing import Callable
 
 from .documents import Workspace
-from .llm import LLM, Message, Usage
+from .llm import LLM, Message, QuotaExceeded, Usage
 from .prompts import load_prompt
 from .tools import TOOLS, Session
 
@@ -38,6 +38,7 @@ def deny_all(tool: str, args: dict) -> bool:
 
 @dataclass
 class RunResult:
+    request: str
     answer: str
     outputs: list[Path]
     trace: list[dict]
@@ -48,10 +49,21 @@ class RunResult:
     session: Session = field(repr=False)
 
     def to_json(self) -> dict:
-        return {"resposta": self.answer, "arquivos": [p.name for p in self.outputs], "passos": self.steps,
+        s = self.session
+        return {"pedido": self.request, "modelo": getattr(s.llm, "model", None),
+                "data_referencia": (s.reference_date or date.today()).isoformat(),
+                "resposta": self.answer, "arquivos": [p.name for p in self.outputs],
+                "graficos": {k: p.name for k, p in s.charts.items()}, "passos": self.steps,
                 "segundos": round(self.seconds, 2), "chamadas_llm": self.usage.calls,
                 "tokens_entrada": self.usage.input_tokens, "tokens_saida": self.usage.output_tokens,
-                "revisao": self.review, "trace": self.trace}
+                "revisao": self.review, "analise": s.analysis, "relatorio": s.report_text,
+                "erros_extracao": s.extraction_errors, "trace": self.trace}
+
+    def save(self, folder: Path) -> Path:
+        """Grava `execucao.json` junto dos entregáveis; o dashboard reabre a execução a partir dele."""
+        p = Path(folder) / "execucao.json"
+        p.write_text(json.dumps(self.to_json(), ensure_ascii=False, indent=2, default=str), encoding="utf-8")
+        return p
 
 
 def _short(obj, limit: int = 300) -> str:
@@ -95,7 +107,7 @@ class Agent:
             messages.append(Message(role="user", text="Um revisor independente encontrou estes problemas. "
                                     "Corrija os entregáveis e responda de novo:\n- " + "\n- ".join(review["problemas"])))
 
-        return RunResult(answer=answer, outputs=session.outputs, trace=trace, usage=session.usage,
+        return RunResult(request=request, answer=answer, outputs=session.outputs, trace=trace, usage=session.usage,
                          seconds=time.perf_counter() - t0, review=review, steps=steps, session=session)
 
     def _loop(self, system, messages, specs, session: Session, log, budget: int) -> str:
@@ -129,6 +141,8 @@ class Agent:
         try:
             res = tool.fn(session, args)
             ok = "erro" not in res
+        except QuotaExceeded:
+            raise  # sem cota não há como o modelo se recuperar: interrompe a execução
         except Exception as e:  # erros viram resultado para o modelo se recuperar
             res, ok = {"erro": f"{type(e).__name__}: {e}"}, False
         log("ferramenta", nome=name, args=_short(args), ok=ok, segundos=round(time.perf_counter() - t, 2),

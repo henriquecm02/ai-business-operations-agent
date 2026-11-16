@@ -208,3 +208,17 @@ def test_quantity_prefix_removed_from_item_description():
         {"descricao": "2 x Pão", "quantidade": 2, "preco_unitario": None, "subtotal": 4.0},
         {"descricao": "Caixa 3x4", "quantidade": 1, "preco_unitario": None, "subtotal": 9.0}]}, "a.txt", False)
     assert [i["descricao"] for i in rec["itens"]] == ["Alface unid", "Pão", "Caixa 3x4"]
+
+
+def test_quota_error_during_tool_stops_the_agent(tmp_path):
+    from opsagent.llm import QuotaExceeded
+
+    def boom(prompt, schema):
+        raise QuotaExceeded("cota")
+
+    script = [LLMResponse(None, [ToolCall("extract_documents", {"nomes": ["*"]})], Usage(calls=1)),
+              LLMResponse("não deveria chegar aqui", [], Usage(calls=1))]
+    llm = ScriptedLLM(chat_script=script, json_fn=boom)
+    with pytest.raises(QuotaExceeded):
+        Agent(llm).run("x", INBOX, tmp_path, reference_date=REF)
+    assert len(llm.chat_inputs) == 1  # parou sem nova chamada ao modelo

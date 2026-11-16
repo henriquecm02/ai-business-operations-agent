@@ -22,7 +22,7 @@ Em uma pequena empresa, alguém passa horas por mês abrindo PDFs, Words e e-mai
 | `*.xlsx` | Abas: Faturas, Itens, Por fornecedor, Por categoria, Alertas |
 | `grafico_*.png` | Gasto por fornecedor, categoria e mês |
 | `relatorio_executivo.md` / `.docx` | Resumo, gastos, vencimentos, alertas e recomendações |
-| `trace.json` | Cada passo: ferramenta, argumentos, tempo, tokens e o parecer do revisor |
+| `execucao.json` | Cada passo (ferramenta, argumentos, tempo, tokens), a análise, o parecer do revisor. O dashboard reabre a execução a partir dele |
 
 Exemplo real gerado pelo agente (sem edição do texto do modelo): [`examples/relatorio_executivo.md`](examples/relatorio_executivo.md) · [planilha](examples/) · gráficos abaixo.
 
@@ -107,11 +107,13 @@ opsagent --data-referencia 2026-10-20          # usa a pasta demo/data/inbox
 opsagent "Quais fornecedores vencem esta semana? Gere só a planilha." --entrada ~/minhas_notas
 ```
 
-**Interface web**
+**Dashboard**
 
 ```bash
 streamlit run app/streamlit_app.py
 ```
+
+Dois modos: **Nova execução** (roda o agente e acompanha cada passo ao vivo) e **Ver execução salva**, que reabre qualquer `execucao.json` de `examples/` ou `runs/` com indicadores, gráficos, alertas, relatório e trace, **sem precisar de chave de API**.
 
 **Servidor MCP** (Claude Desktop, Claude Code ou qualquer cliente MCP)
 

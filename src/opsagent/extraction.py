@@ -5,6 +5,7 @@ são feitas em código, porque são regras exatas que um modelo pode errar.
 """
 from __future__ import annotations
 
+import os
 import re
 from concurrent.futures import ThreadPoolExecutor
 from datetime import date
@@ -166,10 +167,11 @@ def extract_batch(llm: LLM, paths: list[Path]) -> tuple[list[dict], Usage, list[
     return records, usage, errors
 
 
-def extract_many(llm: LLM, paths: list[Path], batch_size: int = 6, workers: int = 3
+def extract_many(llm: LLM, paths: list[Path], batch_size: int | None = None, workers: int = 3
                  ) -> tuple[list[dict], Usage, list[dict]]:
     """Extrai em lotes paralelos. Lotes reduzem o número de requisições (importante em planos com
     limite diário); documentos que falharem no lote são refeitos individualmente."""
+    batch_size = batch_size or int(os.getenv("OPSAGENT_BATCH_SIZE", "6"))
     total = Usage()
     records: list[dict] = []
     errors: list[dict] = []

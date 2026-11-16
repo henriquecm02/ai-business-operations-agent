@@ -56,8 +56,7 @@ def main(argv: list[str] | None = None) -> int:
         print(f"\n❌ {e}", file=sys.stderr)
         return 2
 
-    (args.saida / "trace.json").write_text(json.dumps(result.to_json(), ensure_ascii=False, indent=2, default=str),
-                                           encoding="utf-8")
+    result.save(args.saida)
     print("\n" + result.answer)
     print(f"\nArquivos em {args.saida}: {', '.join(p.name for p in result.outputs)}")
     print(f"{result.seconds:.1f}s · {result.usage.calls} chamadas ao LLM · "

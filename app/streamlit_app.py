@@ -1,4 +1,4 @@
-"""Interface web: envie documentos (ou use a pasta de demonstração), faça o pedido e acompanhe o agente.
+"""Dashboard: execute o agente ou reabra uma execução salva (sem chave de API).
 
   streamlit run app/streamlit_app.py
 """
@@ -9,23 +9,126 @@ import tempfile
 from datetime import date
 from pathlib import Path
 
+import altair as alt
+import pandas as pd
 import streamlit as st
 
 from opsagent.agent import Agent
 from opsagent.cli import DEFAULT_REQUEST
 from opsagent.config import Settings, make_llm
 from opsagent.llm import QuotaExceeded
+from opsagent.outputs import brl
 
 ROOT = Path(__file__).resolve().parents[1]
 DEMO = ROOT / "demo" / "data" / "inbox"
+SAVED_ROOTS = [ROOT / "examples", ROOT / "runs"]
+PROBLEMS = {"duplicada": "Cobrança duplicada", "total_divergente": "Total ≠ soma dos itens",
+            "cnpj_formato_invalido": "CNPJ inválido", "vencimento_antes_da_emissao": "Vencimento antes da emissão"}
 
 st.set_page_config(page_title="Agente de Operações", page_icon="🗂️", layout="wide")
+
+
+def saved_runs() -> list[Path]:
+    runs = [p.parent for root in SAVED_ROOTS if root.exists() for p in root.rglob("execucao.json")]
+    return sorted(runs, key=lambda p: p.stat().st_mtime, reverse=True)
+
+
+def render(data: dict, folder: Path) -> None:
+    a = data.get("analise") or {}
+    rev = data.get("revisao") or {}
+
+    st.markdown(f"**Pedido:** {data.get('pedido', '')}")
+    st.caption(f"Modelo `{data.get('modelo')}` · referência {data.get('data_referencia')} · "
+               f"{data.get('segundos', 0):.0f}s · {data.get('chamadas_llm')} chamadas ao LLM · "
+               f"{(data.get('tokens_entrada', 0) + data.get('tokens_saida', 0)):,} tokens · "
+               f"revisor: {'✅ aprovado' if rev.get('aprovado') else '⚠️ ' + '; '.join(rev.get('problemas', []))}"
+               .replace(",", "."))
+
+    if a:
+        alerts = a.get("alertas", [])
+        k = st.columns(5)
+        prox = a["vencimentos_proximos"]
+        evitado = sum((x.get("valor_evitado") or 0) + (x.get("diferenca") or 0) for x in alerts)
+        for col, (label, value, sub, warn) in zip(k, [
+            ("Total em faturas", brl(a["total_geral"]), f"{a['faturas_validas']} faturas válidas", False),
+            ("Vencido", brl(a["vencidos"]["total"]), f"{len(a['vencidos']['itens'])} faturas",
+             bool(a["vencidos"]["total"])),
+            (f"Vence em {prox['horizonte_dias']} dias", brl(prox["total"]), f"{len(prox['itens'])} faturas", False),
+            ("Pagamento indevido evitado", brl(evitado), "duplicatas + divergências", False),
+            ("Alertas", str(len(alerts)), "exigem atenção humana", bool(alerts)),
+        ]):
+            col.metric(label, value, sub, delta_color="inverse" if warn else "off", delta_arrow="off")
+
+        c1, c2 = st.columns(2)
+        for col, title, series in [(c1, "Gasto por fornecedor", a["por_fornecedor"]),
+                                   (c2, "Gasto por categoria", a["por_categoria"])]:
+            with col:
+                st.markdown(f"##### {title}")
+                df = pd.DataFrame({"nome": list(series), "valor": list(series.values())})
+                df["rotulo"] = df["valor"].map(brl)
+                bars = alt.Chart(df).mark_bar(color="#3b6fb6", cornerRadiusEnd=3).encode(
+                    x=alt.X("valor:Q", title=None, scale=alt.Scale(domain=[0, df["valor"].max() * 1.25]),
+                            axis=alt.Axis(format=",.0f", labelExpr="'R$ ' + replace(datum.label, ',', '.')")),
+                    y=alt.Y("nome:N", sort="-x", title=None, axis=alt.Axis(labelLimit=260)),
+                    tooltip=[alt.Tooltip("nome:N", title=""), alt.Tooltip("rotulo:N", title="Total")])
+                text = bars.mark_text(align="left", dx=4, color="#555").encode(text="rotulo:N")
+                st.altair_chart((bars + text).properties(height=34 * len(df) + 20), use_container_width=True)
+
+        if alerts:
+            st.markdown("##### 🚨 Alertas")
+            st.dataframe(pd.DataFrame([{
+                "Problema": PROBLEMS.get(x["problema"], x["problema"]), "Documento": x["arquivo"],
+                "Fornecedor": x.get("fornecedor"),
+                "Detalhe": (f"cópia de {x['duplicada_de']}" if x.get("duplicada_de") else
+                            f"impresso {brl(x['total_impresso'])} · itens somam {brl(x['soma_itens'])}"
+                            if x.get("soma_itens") is not None else ""),
+            } for x in alerts]), hide_index=True, use_container_width=True)
+
+    tab_resp, tab_rel, tab_venc, tab_arq, tab_trace = st.tabs(
+        ["💬 Resposta", "📄 Relatório", "📅 Vencimentos", "⬇️ Arquivos", "🔍 Trace"])
+    with tab_resp:
+        st.markdown(data.get("resposta") or "")
+    with tab_rel:
+        st.markdown(data.get("relatorio") or "_Nenhum relatório gerado._")
+    with tab_venc:
+        if a:
+            rows = [{**x, "situação": "vencida"} for x in a["vencidos"]["itens"]] + \
+                   [{**x, "situação": "a vencer"} for x in a["vencimentos_proximos"]["itens"]]
+            st.dataframe(pd.DataFrame(rows), hide_index=True, use_container_width=True)
+    with tab_arq:
+        for name in data.get("arquivos", []):
+            p = folder / name
+            if p.exists():
+                st.download_button(f"⬇️ {name}", p.read_bytes(), file_name=name, key=f"{folder}/{name}")
+    with tab_trace:
+        steps = [e for e in data.get("trace", []) if e["tipo"] in ("ferramenta", "aprovacao", "revisao")]
+        st.dataframe(pd.DataFrame([{"t (s)": e["t"], "etapa": e.get("nome", e["tipo"]),
+                                    "ok": e.get("ok", e.get("aprovado")), "detalhe": e.get("args", "")}
+                                   for e in steps]), hide_index=True, use_container_width=True)
+
+
 st.title("🗂️ Agente de Operações com IA")
-st.caption("Uma pasta de documentos financeiros vira planilha, gráficos e relatório executivo, com validação e revisão.")
+st.caption("Uma pasta de notas, faturas e contratos vira planilha, gráficos e relatório executivo, "
+           "com validação em código, revisor independente e aprovação humana.")
 
 settings = Settings.from_env()
+runs = saved_runs()
+
+with st.sidebar:
+    modo = st.radio("Modo", ["Ver execução salva", "Nova execução"], index=0 if runs else 1)
+
+if modo == "Ver execução salva":
+    if not runs:
+        st.info("Nenhuma execução salva ainda. Rode o agente (CLI ou 'Nova execução').")
+        st.stop()
+    with st.sidebar:
+        escolha = st.selectbox("Execução", runs, format_func=lambda p: str(p.relative_to(ROOT)))
+    render(json.loads((escolha / "execucao.json").read_text(encoding="utf-8")), escolha)
+    st.stop()
+
 if not settings.api_key:
-    st.error("Defina GEMINI_API_KEY (veja .env.example) para executar.")
+    st.error("Defina GEMINI_API_KEY (veja .env.example) para executar o agente. "
+             "Sem chave, use o modo 'Ver execução salva'.")
     st.stop()
 
 with st.sidebar:
@@ -43,18 +146,17 @@ with st.sidebar:
 pedido = st.text_area("Pedido", DEFAULT_REQUEST, height=90)
 
 if st.button("Executar", type="primary"):
+    if fonte.startswith("Enviar") and not uploads:
+        st.warning("Envie pelo menos um arquivo.")
+        st.stop()
     work = Path(tempfile.mkdtemp(prefix="opsagent_"))
+    entrada = DEMO
     if uploads:
         entrada = work / "entrada"
         entrada.mkdir()
         for f in uploads:
             (entrada / Path(f.name).name).write_bytes(f.getvalue())
-    elif fonte.startswith("Enviar"):
-        st.warning("Envie pelo menos um arquivo.")
-        st.stop()
-    else:
-        entrada = DEMO
-    saida = work / "saida"
+    saida = ROOT / "runs" / work.name
 
     with st.status("Executando…", expanded=True) as status:
         def on_event(ev: dict) -> None:
@@ -73,30 +175,7 @@ if st.button("Executar", type="primary"):
             status.update(label="Cota do modelo esgotada", state="error")
             st.error(str(e))
             st.stop()
-        status.update(label=f"Concluído em {result.seconds:.0f}s", state="complete")
+        result.save(saida)
+        status.update(label=f"Concluído em {result.seconds:.0f}s · salvo em runs/{saida.name}", state="complete")
 
-    c1, c2, c3, c4 = st.columns(4)
-    c1.metric("Tempo", f"{result.seconds:.0f}s")
-    c2.metric("Chamadas ao LLM", result.usage.calls)
-    c3.metric("Tokens", f"{result.usage.input_tokens + result.usage.output_tokens:,}".replace(",", "."))
-    c4.metric("Arquivos gerados", len(result.outputs))
-
-    st.subheader("Resposta do agente")
-    st.markdown(result.answer)
-
-    a = result.session.analysis
-    if a and a.get("alertas"):
-        st.subheader("Alertas")
-        st.dataframe(a["alertas"], use_container_width=True)
-
-    tab_rel, tab_graf, tab_arq, tab_trace = st.tabs(["Relatório", "Gráficos", "Arquivos", "Trace"])
-    with tab_rel:
-        st.markdown(result.session.report_text or "_Nenhum relatório gerado._")
-    with tab_graf:
-        for p in result.session.charts.values():
-            st.image(str(p))
-    with tab_arq:
-        for p in result.outputs:
-            st.download_button(f"⬇️ {p.name}", p.read_bytes(), file_name=p.name, key=str(p))
-    with tab_trace:
-        st.json(json.loads(json.dumps(result.to_json(), default=str)), expanded=False)
+    render(result.to_json(), saida)
