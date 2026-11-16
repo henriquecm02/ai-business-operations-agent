@@ -108,9 +108,10 @@ def write_report(title: str, markdown: str, charts: list[Path], md_path: Path, d
 
 
 def _strip_title(markdown: str, title: str) -> str:
-    """Remove um título repetido no início do corpo (o modelo às vezes o inclui)."""
+    """Remove um título de nível 1 no início do corpo: o título do documento já é adicionado aqui,
+    e o modelo às vezes inclui outro (igual ou diferente)."""
     lines = markdown.strip().splitlines()
-    if lines and lines[0].lstrip("#").strip().lower() == title.strip().lower():
+    if lines and (lines[0].startswith("# ") or lines[0].lstrip("#").strip().lower() == title.strip().lower()):
         lines = lines[1:]
     return "\n".join(lines)
 

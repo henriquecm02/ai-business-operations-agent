@@ -190,6 +190,8 @@ def test_repeated_title_is_removed(tmp_path):
     from opsagent.outputs import write_report
     write_report("Relatório X", "# Relatório X\n\nTexto", [], tmp_path / "r.md", tmp_path / "r.docx")
     assert (tmp_path / "r.md").read_text().count("Relatório X") == 1
+    write_report("Relatório X", "# Outro título\n\n## Seção", [], tmp_path / "s.md", tmp_path / "s.docx")
+    assert "Outro título" not in (tmp_path / "s.md").read_text() and "## Seção" in (tmp_path / "s.md").read_text()
 
 
 def test_item_without_unit_price_is_valid():
@@ -197,3 +199,12 @@ def test_item_without_unit_price_is_valid():
            "data_emissao": "2026-01-10", "vencimento": "2026-01-20", "valor_total": 31.0,
            "itens": [{"descricao": "Alface", "quantidade": 10, "preco_unitario": None, "subtotal": 31.0}]}
     assert validate(rec) == []
+
+
+def test_quantity_prefix_removed_from_item_description():
+    from opsagent.extraction import _finish
+    rec = _finish({"tipo": "fatura", "itens": [
+        {"descricao": "10x Alface unid", "quantidade": 10, "preco_unitario": None, "subtotal": 31.0},
+        {"descricao": "2 x Pão", "quantidade": 2, "preco_unitario": None, "subtotal": 4.0},
+        {"descricao": "Caixa 3x4", "quantidade": 1, "preco_unitario": None, "subtotal": 9.0}]}, "a.txt", False)
+    assert [i["descricao"] for i in rec["itens"]] == ["Alface unid", "Pão", "Caixa 3x4"]

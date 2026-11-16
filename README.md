@@ -24,7 +24,9 @@ Em uma pequena empresa, alguém passa horas por mês abrindo PDFs, Words e e-mai
 | `relatorio_executivo.md` / `.docx` | Resumo, gastos, vencimentos, alertas e recomendações |
 | `trace.json` | Cada passo: ferramenta, argumentos, tempo, tokens e o parecer do revisor |
 
-Exemplo real gerado pelo agente: [`examples/`](examples/).
+Exemplo real gerado pelo agente (sem edição do texto do modelo): [`examples/relatorio_executivo.md`](examples/relatorio_executivo.md) · [planilha](examples/) · gráficos abaixo.
+
+<p><img src="examples/grafico_fornecedor.png" width="48%"> <img src="examples/grafico_categoria.png" width="48%"></p>
 
 ## Como funciona
 
@@ -55,7 +57,29 @@ Princípios que guiaram as decisões (detalhes em [`docs/ARCHITECTURE.md`](docs/
 Benchmark reproduzível (`bench/run_benchmark.py`) sobre 17 documentos sintéticos com respostas conhecidas ([`demo/data/ground_truth.json`](demo/data/ground_truth.json)), incluindo **uma nota duplicada e uma com total divergente plantadas de propósito**.
 
 <!-- RESULTS:START -->
-_Resultados em atualização._
+**Execução ponta a ponta do agente**: `gemini-3.1-flash-lite`, prompt de extração v2, data de referência 20/10/2026 ([dados brutos](bench/results/20261115-2122_gemini-3.1-flash-lite.json)):
+
+| Métrica | Resultado |
+|---|---|
+| Entregáveis gerados (planilha, relatório MD + DOCX, gráficos) | ✅ todos |
+| Problemas plantados detectados (duplicata, total divergente) | **2 de 2**, sem alarmes falsos |
+| Valores em R$ no relatório sem respaldo nos dados | **0** |
+| Acurácia dos campos extraídos (8 campos × 16 faturas + tipo do contrato) | **98,4%** |
+| Tempo do pedido até os arquivos prontos | **28 s** (6 s de extração dos 17 documentos) |
+| Chamadas ao LLM / tokens por execução | 12 / ~41 mil |
+| Parecer do revisor | aprovado |
+
+**Evolução medida**
+
+| Versão | Campos | Itens | Alarmes falsos | Observação |
+|---|---|---|---|---|
+| Prompt v1 · `gemini-3.5-flash-lite` | 96,1% | 83,9% | 2 | o valor entre parênteses nos e-mails era lido como preço unitário ([dados](bench/results/20261115-2055_gemini-3.5-flash-lite.json)) |
+| Prompt v2 · `gemini-3.1-flash-lite` | 98,4% | 83,9% | 0 | itens certos, mas a descrição vinha como "10x Alface" |
+| v2 + normalização da descrição em código | 98,4% | **100%** | 0 | medido só na extração: 3 chamadas, 11 s ([dados](bench/results/20261115-2124_gemini-3.1-flash-lite_extracao.json)) |
+
+**Erros que restam:** 2 de 129 campos. Os dois e-mails de cobrança dizem "referente ao pedido de 13/10/2026", e o modelo devolveu `data_emissao = null` em vez de supor que a data do pedido é a de emissão. É o comportamento pedido pelo prompt ("campo ausente: null, nunca invente"), e o relatório apontou essas faturas como "sem data de emissão". Mantive o ground truth como está para não ajustar o teste ao resultado.
+
+> **Ressalvas:** cada linha é 1 execução (o plano gratuito do Gemini limita as requisições diárias), e o conjunto tem 17 documentos sintéticos. A v1 rodou numa versão anterior dos dados, em que os nomes de fornecedores tinham o sufixo "(fictícia)". Os números indicam a tendência, não são uma estatística robusta. `python bench/run_benchmark.py --rodadas 5` repete a medição.
 <!-- RESULTS:END -->
 
 ### O que o benchmark ensinou (prompt v1 → v2)

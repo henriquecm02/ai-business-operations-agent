@@ -1,0 +1,105 @@
+{
+  "data": "20261115-2122",
+  "modelo": "gemini-3.1-flash-lite",
+  "rodadas": 1,
+  "prompts": {
+    "system": "v1",
+    "extract": "v2",
+    "reviewer": "v1"
+  },
+  "extracao": {
+    "acuracia_campos": {
+      "media": 0.98,
+      "min": 0.9845,
+      "max": 0.9845
+    },
+    "acuracia_itens": {
+      "media": 0.84,
+      "min": 0.8387,
+      "max": 0.8387
+    },
+    "segundos": {
+      "media": 6.24,
+      "min": 6.24,
+      "max": 6.24
+    },
+    "problemas_detectados": [
+      2
+    ],
+    "problemas_esperados": 2,
+    "rodadas": [
+      {
+        "documentos": 17,
+        "erros": [],
+        "segundos": 6.24,
+        "acuracia_campos": 0.9845,
+        "acuracia_por_campo": {
+          "tipo": 1.0,
+          "numero": 1.0,
+          "fornecedor": 1.0,
+          "cnpj": 1.0,
+          "data_emissao": 0.875,
+          "vencimento": 1.0,
+          "valor_total": 1.0,
+          "categoria": 1.0
+        },
+        "acuracia_itens": 0.8387,
+        "problemas_esperados": 2,
+        "problemas_detectados": 2,
+        "falsos_alertas": [],
+        "divergencias": [
+          {
+            "arquivo": "email_cobranca_NF-20260013.txt",
+            "campo": "data_emissao",
+            "esperado": "2026-10-13",
+            "obtido": null
+          },
+          {
+            "arquivo": "email_cobranca_NF-20260014.txt",
+            "campo": "data_emissao",
+            "esperado": "2026-09-05",
+            "obtido": null
+          }
+        ]
+      }
+    ]
+  },
+  "agente": {
+    "taxa_sucesso": 1.0,
+    "segundos": {
+      "media": 28.33,
+      "min": 28.33,
+      "max": 28.33
+    },
+    "chamadas_llm": {
+      "media": 12,
+      "min": 12,
+      "max": 12
+    },
+    "tokens": {
+      "media": 41423,
+      "min": 41423,
+      "max": 41423
+    },
+    "rodadas": [
+      {
+        "sucesso": true,
+        "segundos": 28.33,
+        "passos_llm": 8,
+        "chamadas_llm": 12,
+        "tokens": 41423,
+        "arquivos": [
+          "grafico_categoria.png",
+          "grafico_fornecedor.png",
+          "relatorio_executivo.docx",
+          "relatorio_executivo.md",
+          "relatorio_financeiro_2026_10.xlsx"
+        ],
+        "revisao_aprovada": true,
+        "valores_nao_comprovados_no_relatorio": [],
+        "relatorio_cita_duplicata": true,
+        "relatorio_cita_divergencia": true
+      }
+    ]
+  }
+}

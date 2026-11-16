@@ -56,7 +56,12 @@ def score_extraction(records: list[dict], errors: list[dict], secs: float) -> di
         if t["tipo"] == "fatura":
             item_total += len(t["itens"])
             got = {(norm(i["descricao"]), norm(float(i["subtotal"]))) for i in r.get("itens", [])}
-            item_hits += sum((norm(i["descricao"]), norm(i["subtotal"])) in got for i in t["itens"])
+            for i in t["itens"]:
+                if (norm(i["descricao"]), norm(i["subtotal"])) in got:
+                    item_hits += 1
+                else:
+                    misses.append({"arquivo": fname, "campo": "item", "esperado": [i["descricao"], i["subtotal"]],
+                                   "obtido": [[x["descricao"], x["subtotal"]] for x in r.get("itens", [])]})
     expected_issues = {(f, p) for f, t in TRUTH.items() for p in t["problemas_esperados"]}
     found_issues = {(r["arquivo"], p) for r in records for p in r["problemas"] if p in ("duplicada", "total_divergente")}
     total_hits, total_n = sum(hits.values()), sum(n_fields.values())
@@ -78,6 +83,8 @@ def bench_agent(llm, out_dir: Path) -> tuple[dict, dict]:
     result = Agent(llm, approve=lambda *_: False).run(DEFAULT_REQUEST, INBOX, out_dir, reference_date=REF)
     ext_secs = sum(e.get("segundos", 0) for e in result.trace if e.get("nome") == "extract_documents")
     extraction = score_extraction(result.session.records, result.session.extraction_errors, ext_secs)
+    (out_dir / "registros_extraidos.json").write_text(
+        json.dumps(result.session.records, ensure_ascii=False, indent=2, default=str), encoding="utf-8")
     names = {p.name for p in result.outputs}
     a = result.session.analysis or {}
     report = result.session.report_text or ""

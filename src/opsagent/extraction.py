@@ -130,8 +130,13 @@ BATCH_SCHEMA: dict[str, Any] = {
 }
 
 
+QTY_PREFIX = re.compile(r"^\s*\d+(?:[.,]\d+)?\s*[xX×]\s+")
+
+
 def _finish(data: dict, name: str, truncated: bool) -> dict:
     data.setdefault("itens", [])
+    for it in data["itens"]:  # "10x Alface" -> "Alface" (a quantidade já está no campo próprio)
+        it["descricao"] = QTY_PREFIX.sub("", it.get("descricao") or "").strip()
     data["arquivo"] = name
     data["problemas"] = validate(data) + (["texto_truncado"] if truncated else [])
     return data

@@ -1,0 +1,39 @@
+{
+  "documentos": 17,
+  "erros": [],
+  "segundos": 11.33,
+  "acuracia_campos": 0.9845,
+  "acuracia_por_campo": {
+    "tipo": 1.0,
+    "numero": 1.0,
+    "fornecedor": 1.0,
+    "cnpj": 1.0,
+    "data_emissao": 0.875,
+    "vencimento": 1.0,
+    "valor_total": 1.0,
+    "categoria": 1.0
+  },
+  "acuracia_itens": 1.0,
+  "problemas_esperados": 2,
+  "problemas_detectados": 2,
+  "falsos_alertas": [],
+  "divergencias": [
+    {
+      "arquivo": "email_cobranca_NF-20260013.txt",
+      "campo": "data_emissao",
+      "esperado": "2026-10-13",
+      "obtido": null
+    },
+    {
+      "arquivo": "email_cobranca_NF-20260014.txt",
+      "campo": "data_emissao",
+      "esperado": "2026-09-05",
+      "obtido": null
+    }
+  ],
+  "modelo": "gemini-3.1-flash-lite",
+  "prompt_extract": "v2",
+  "chamadas": 3,
+  "tokens": 9509,
+  "tipo": "somente_extracao"
+}
