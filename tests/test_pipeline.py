@@ -222,3 +222,7 @@ def test_quota_error_during_tool_stops_the_agent(tmp_path):
     with pytest.raises(QuotaExceeded):
         Agent(llm).run("x", INBOX, tmp_path, reference_date=REF)
     assert len(llm.chat_inputs) == 1  # parou sem nova chamada ao modelo
+
+
+def test_grounding_rejects_near_miss():
+    assert ungrounded_values("Total de R$ 99,99", {"total_geral": 100.0}) == ["R$ 99,99"]

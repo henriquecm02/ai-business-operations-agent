@@ -75,7 +75,7 @@ def ungrounded_values(markdown: str, analysis: dict, extra: set[float] | None = 
     bad = []
     for m in BRL_RE.finditer(markdown):
         v = parse_brl(m.group(1))
-        if not any(abs(v - a) < 0.011 for a in allowed):
+        if not any(abs(v - a) < 0.005 for a in allowed):  # exato em 2 casas: 0,01 de folga aceitaria R$ 99,99 por R$ 100,00
             bad.append(m.group(0))
     return sorted(set(bad))
 
