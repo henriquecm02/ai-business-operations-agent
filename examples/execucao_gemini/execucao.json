@@ -1,0 +1,367 @@
+{
+  "pedido": "Analise os documentos desta pasta, extraia as principais informações, organize os dados em uma planilha e gere um relatório executivo com gráficos.",
+  "modelo": "gemini-3.5-flash-lite",
+  "data_referencia": "2026-10-20",
+  "resposta": "Análise concluída com sucesso! Os seguintes entregáveis foram gerados:\n\n1. **Planilha Excel:** `analise_financeira_2026.xlsx` (contendo abas de faturas, itens, agregados por fornecedor/categoria e alertas).\n2. **Relatório Executivo:** `relatorio_executivo.md` e `relatorio_executivo.docx` (acompanhado dos gráficos `grafico_fornecedor.png`, `grafico_categoria.png` e `grafico_mes.png`).\n\n### Destaques e Alertas Principais:\n- **Total Geral Analisado:** R$ 5.678,20 em 15 faturas válidas (ticket médio de R$ 378,55).\n- **Faturas Vencidas (Atenção Urgente):** R$ 3.303,60 em aberto acumulados.\n- **Vencimentos Próximos (30 dias):** R$ 2.374,60.\n- **Alertas Críticos:**\n  - **Fatura Duplicada:** `reenvio_NF-20260003.pdf` (Limpeza Total Serviços) no valor de R$ 1.130,00 (duplicada).\n  - **Divergência de Valores:** `nota_NF-20260099.pdf` (Gás Rápido Distribuidora) com itens somando R$ 414,00 e total impresso de R$ 564,00 (diferença de R$ 150,00).",
+  "arquivos": [
+    "analise_financeira_2026.xlsx",
+    "grafico_fornecedor.png",
+    "grafico_categoria.png",
+    "grafico_mes.png",
+    "relatorio_executivo.md",
+    "relatorio_executivo.docx"
+  ],
+  "graficos": {
+    "fornecedor": "grafico_fornecedor.png",
+    "categoria": "grafico_categoria.png",
+    "mes": "grafico_mes.png"
+  },
+  "passos": 9,
+  "segundos": 29.28,
+  "chamadas_llm": 13,
+  "tokens_entrada": 39894,
+  "tokens_saida": 7068,
+  "revisao": {
+    "aprovado": true,
+    "problemas": []
+  },
+  "analise": {
+    "data_referencia": "2026-10-20",
+    "documentos_processados": 17,
+    "faturas_validas": 15,
+    "contratos": 1,
+    "total_geral": 5678.2,
+    "ticket_medio": 378.55,
+    "por_fornecedor": {
+      "Limpeza Total Serviços": 1610.0,
+      "Gás Rápido Distribuidora": 1367.0,
+      "Laticínios Serra Azul ME": 1242.4,
+      "Embalagens Prisma Ltda": 643.8,
+      "Hortifruti Vale Verde Ltda": 435.2,
+      "TecnoPonto Sistemas": 379.8
+    },
+    "por_categoria": {
+      "insumos": 1677.6,
+      "servicos": 1610.0,
+      "utilidades": 1367.0,
+      "embalagens": 643.8,
+      "software": 379.8
+    },
+    "por_mes_emissao": {
+      "2026-09": 3032.2,
+      "2026-10": 2646.0
+    },
+    "maior_fornecedor": {
+      "nome": "Limpeza Total Serviços",
+      "valor": 1610.0,
+      "participacao_pct": 28.4
+    },
+    "vencimentos_proximos": {
+      "horizonte_dias": 30,
+      "itens": [
+        {
+          "numero": "NF-20260004",
+          "fornecedor": "Limpeza Total Serviços",
+          "vencimento": "2026-10-20",
+          "valor": 480.0
+        },
+        {
+          "numero": "NF-20260007",
+          "fornecedor": "Gás Rápido Distribuidora",
+          "vencimento": "2026-10-20",
+          "valor": 389.0
+        },
+        {
+          "numero": "NF-20260008",
+          "fornecedor": "Hortifruti Vale Verde Ltda",
+          "vencimento": "2026-10-22",
+          "valor": 142.6
+        },
+        {
+          "numero": "NF-20260009",
+          "fornecedor": "Embalagens Prisma Ltda",
+          "vencimento": "2026-11-03",
+          "valor": 434.5
+        },
+        {
+          "numero": "NF-20260013",
+          "fornecedor": "Hortifruti Vale Verde Ltda",
+          "vencimento": "2026-11-10",
+          "valor": 136.6
+        },
+        {
+          "numero": "NF-20260010",
+          "fornecedor": "Laticínios Serra Azul ME",
+          "vencimento": "2026-11-18",
+          "valor": 791.9
+        }
+      ],
+      "total": 2374.6
+    },
+    "vencidos": {
+      "itens": [
+        {
+          "numero": "NF-20260014",
+          "fornecedor": "Hortifruti Vale Verde Ltda",
+          "vencimento": "2026-09-12",
+          "valor": 76.6
+        },
+        {
+          "numero": "NF-20260003",
+          "fornecedor": "Limpeza Total Serviços",
+          "vencimento": "2026-09-13",
+          "valor": 1130.0
+        },
+        {
+          "numero": "NF-20260012",
+          "fornecedor": "Embalagens Prisma Ltda",
+          "vencimento": "2026-09-18",
+          "valor": 209.3
+        },
+        {
+          "numero": "NF-20260001",
+          "fornecedor": "Laticínios Serra Azul ME",
+          "vencimento": "2026-09-28",
+          "valor": 450.5
+        },
+        {
+          "numero": "NF-20260002",
+          "fornecedor": "TecnoPonto Sistemas",
+          "vencimento": "2026-10-01",
+          "valor": 189.9
+        },
+        {
+          "numero": "NF-20260006",
+          "fornecedor": "Hortifruti Vale Verde Ltda",
+          "vencimento": "2026-10-06",
+          "valor": 79.4
+        },
+        {
+          "numero": "NF-20260099",
+          "fornecedor": "Gás Rápido Distribuidora",
+          "vencimento": "2026-10-12",
+          "valor": 564.0
+        },
+        {
+          "numero": "NF-20260011",
+          "fornecedor": "TecnoPonto Sistemas",
+          "vencimento": "2026-10-17",
+          "valor": 189.9
+        },
+        {
+          "numero": "NF-20260005",
+          "fornecedor": "Gás Rápido Distribuidora",
+          "vencimento": "2026-10-18",
+          "valor": 414.0
+        }
+      ],
+      "total": 3303.6
+    },
+    "alertas": [
+      {
+        "arquivo": "nota_NF-20260099.pdf",
+        "problema": "total_divergente",
+        "numero": "NF-20260099",
+        "fornecedor": "Gás Rápido Distribuidora",
+        "total_impresso": 564.0,
+        "soma_itens": 414.0,
+        "diferenca": 150.0
+      },
+      {
+        "arquivo": "reenvio_NF-20260003.pdf",
+        "problema": "duplicada",
+        "numero": "NF-20260003",
+        "fornecedor": "Limpeza Total Serviços",
+        "duplicada_de": "nota_NF-20260003.pdf",
+        "valor_evitado": 1130.0
+      }
+    ],
+    "contratos_detalhe": [
+      {
+        "arquivo": "contrato_limpeza.pdf",
+        "contratada": "Limpeza Total Serviços",
+        "valor": 480.0,
+        "periodicidade_valor": "por visita semanal",
+        "vigencia_inicio": "2026-03-01",
+        "vigencia_fim": "2027-02-28",
+        "renovacao_automatica": true,
+        "pontos_de_atencao": [
+          "Reajuste anual pelo IPCA na data de aniversário.",
+          "Rescisão com aviso prévio de 30 dias.",
+          "Multa de 10% do valor anual se a rescisão ocorrer antes de 6 meses de vigência."
+        ]
+      }
+    ]
+  },
+  "relatorio": "# Relatório Executivo - Análise Financeira\nData de referência: 20:2026-10-20\n\n## Resumo Executivo\n- O total geral de faturas válidas analisadas é de R$ 5.678,20, distribuídas entre 15 faturas processadas (ticket médio de R$ 378,55).\n- Há um volume expressivo de faturas vencidas totalizando R$ 3.303,60 que requerem regularização imediata com os fornecedores.\n- Foram identificados alertas críticos de divergência de valores e fatura duplicada, exigindo atenção antes de efetuar pagamentos.\n\n## Gastos por Fornecedor e Categoria\n### Por Fornecedor\n- **Limpeza Total Serviços**: R$ 1.610,00 (maior fornecedor, 28,4% do total)\n- **Gás Rápido Distribuidora**: R$ 1.367,00\n- **Laticínios Serra Azul ME**: R$ 1.242,40\n- **Embalagens Prisma Ltda**: R$ 643,80\n- **Hortifruti Vale Verde Ltda**: R$ 435,20\n- **TecnoPonto Sistemas**: R$ 379,80\n\n### Por Categoria\n- **Insumos**: R$ 1.677,60\n- **Serviços**: R$ 1.610,00\n- **Utilidades**: R$ 1.367,00\n- **Embalagens**: R$ 643,80\n- **Software**: R$ 379,80\n\n## Vencimentos Próximos (Próximos 30 Dias)\nTotal vencendo nos próximos 30 dias: **R$ 2.374,60**\n- **Limpeza Total Serviços** (NF-20260004): R$ 480,00 — Vencimento: 2026-10-20\n- **Gás Rápido Distribuidora** (NF-20260007): R$ 389,00 — Vencimento: 2026-10-20\n- **Hortifruti Vale Verde Ltda** (NF-20260008): R$ 142,60 — Vencimento: 2026-10-22\n- **Embalagens Prisma Ltda** (NF-20260009): R$ 434,50 — Vencimento: 2026-11-03\n- **Hortifruti Vale Verde Ltda** (NF-20260013): R$ 136,60 — Vencimento: 2026-11-10\n- **Laticínios Serra Azul ME** (NF-20260010): R$ 791,90 — Vencimento: 2026-11-18\n\n*(Nota adicional: Há faturas vencidas acumuladas no valor total de R$ 3.303,60 que precisam de atenção urgente).*\n\n## Alertas Críticos\n1. **Fatura Duplicada**: `reenvio_NF-20260003.pdf` (Limpeza Total Serviços) é uma duplicata de `nota_NF-20260003.pdf` no valor de R$ 1.130,00. Evitado pagamento em duplicidade.\n2. **Divergência de Valores**: `nota_NF-20260099.pdf` (Gás Rápido Distribuidora) apresenta soma de itens igual a R$ 414,00, mas total impresso de R$ 564,00 (diferença de R$ 150,00).\n3. **Contrato de Limpeza**: Vigência até 2027-02-28, com reajuste anual pelo IPCA e multa de 10% do valor anual em caso de rescisão antecipada.\n\n## Recomendações Acionáveis\n1. **Contatar fornecedores com faturas vencidas** (R$ 3.303,60 em aberto) para renegociação e evitar interrupção de serviços ou suprimentos.\n2. **Suspender o pagamento** da NF-20260099 da Gás Rápido Distribuidora até esclarecer a divergência de R$ 150,00 entre os itens e o total impresso.\n3. **Descartar a cobrança duplicada** da NF-20260003 da Limpeza Total Serviços (R$ 1.130,00).\n4. **Organizar fluxo de caixa** para honrar os vencimentos de R$ 2.374,60 previstos para os próximos 30 dias.\n",
+  "erros_extracao": [],
+  "trace": [
+    {
+      "t": 5.21,
+      "tipo": "llm",
+      "segundos": 5.19,
+      "tokens_in": 1035,
+      "tokens_out": 10,
+      "ferramentas": [
+        "list_documents"
+      ]
+    },
+    {
+      "t": 5.21,
+      "tipo": "ferramenta",
+      "nome": "list_documents",
+      "args": "{}",
+      "ok": true,
+      "segundos": 0.0,
+      "resultado": "{\"total\": 17, \"documentos\": [{\"nome\": \"contrato_limpeza.pdf\", \"tipo\": \"pdf\", \"tamanho_kb\": 1.8}, {\"nome\": \"email_cobranca_NF-20260013.txt\", \"tipo\": \"txt\", \"tamanho_kb\": 0.4}, {\"nome\": \"email_cobranca_NF-20260014.txt\", \"tipo\": \"txt\", \"tamanho_kb\": 0.3}, {\"nome\": \"fatura_NF-20260010.docx\", \"tipo\": \"do…"
+    },
+    {
+      "t": 8.88,
+      "tipo": "llm",
+      "segundos": 3.67,
+      "tokens_in": 1648,
+      "tokens_out": 16,
+      "ferramentas": [
+        "extract_documents"
+      ]
+    },
+    {
+      "t": 16.3,
+      "tipo": "ferramenta",
+      "nome": "extract_documents",
+      "args": "{\"nomes\": [\"*\"]}",
+      "ok": true,
+      "segundos": 7.42,
+      "resultado": "{\"extraidos\": 17, \"erros\": [], \"documentos\": [{\"arquivo\": \"contrato_limpeza.pdf\", \"tipo\": \"contrato\", \"fornecedor\": \"Limpeza Total Serviços\", \"valor_total\": 480.0, \"problemas\": []}, {\"arquivo\": \"email_cobranca_NF-20260013.txt\", \"tipo\": \"fatura\", \"fornecedor\": \"Hortifruti Vale Verde Ltda\", \"valor_tot…"
+    },
+    {
+      "t": 17.24,
+      "tipo": "llm",
+      "segundos": 0.94,
+      "tokens_in": 2618,
+      "tokens_out": 38,
+      "ferramentas": [
+        "analyze_invoices"
+      ]
+    },
+    {
+      "t": 17.38,
+      "tipo": "ferramenta",
+      "nome": "analyze_invoices",
+      "args": "{\"horizonte_dias\": 30, \"data_referencia\": \"2026-10-20\"}",
+      "ok": true,
+      "segundos": 0.14,
+      "resultado": "{\"data_referencia\": \"2026-10-20\", \"documentos_processados\": 17, \"faturas_validas\": 15, \"contratos\": 1, \"total_geral\": 5678.2, \"ticket_medio\": 378.55, \"por_fornecedor\": {\"Limpeza Total Serviços\": 1610.0, \"Gás Rápido Distribuidora\": 1367.0, \"Laticínios Serra Azul ME\": 1242.4, \"Embalagens Prisma Ltda\":…"
+    },
+    {
+      "t": 18.08,
+      "tipo": "llm",
+      "segundos": 0.7,
+      "tokens_in": 4106,
+      "tokens_out": 29,
+      "ferramentas": [
+        "create_spreadsheet"
+      ]
+    },
+    {
+      "t": 18.43,
+      "tipo": "ferramenta",
+      "nome": "create_spreadsheet",
+      "args": "{\"nome_arquivo\": \"analise_financeira_2026.xlsx\"}",
+      "ok": true,
+      "segundos": 0.35,
+      "resultado": "{\"arquivo\": \"analise_financeira_2026.xlsx\", \"abas\": [\"Faturas\", \"Itens\", \"Por fornecedor\", \"Por categoria\", \"Alertas\"]}"
+    },
+    {
+      "t": 19.15,
+      "tipo": "llm",
+      "segundos": 0.72,
+      "tokens_in": 4188,
+      "tokens_out": 18,
+      "ferramentas": [
+        "create_chart"
+      ]
+    },
+    {
+      "t": 19.46,
+      "tipo": "ferramenta",
+      "nome": "create_chart",
+      "args": "{\"tipo\": \"fornecedor\"}",
+      "ok": true,
+      "segundos": 0.31,
+      "resultado": "{\"arquivo\": \"grafico_fornecedor.png\"}"
+    },
+    {
+      "t": 20.15,
+      "tipo": "llm",
+      "segundos": 0.69,
+      "tokens_in": 4227,
+      "tokens_out": 16,
+      "ferramentas": [
+        "create_chart"
+      ]
+    },
+    {
+      "t": 20.26,
+      "tipo": "ferramenta",
+      "nome": "create_chart",
+      "args": "{\"tipo\": \"categoria\"}",
+      "ok": true,
+      "segundos": 0.11,
+      "resultado": "{\"arquivo\": \"grafico_categoria.png\"}"
+    },
+    {
+      "t": 21.62,
+      "tipo": "llm",
+      "segundos": 1.36,
+      "tokens_in": 4262,
+      "tokens_out": 16,
+      "ferramentas": [
+        "create_chart"
+      ]
+    },
+    {
+      "t": 21.71,
+      "tipo": "ferramenta",
+      "nome": "create_chart",
+      "args": "{\"tipo\": \"mes\"}",
+      "ok": true,
+      "segundos": 0.09,
+      "resultado": "{\"arquivo\": \"grafico_mes.png\"}"
+    },
+    {
+      "t": 25.06,
+      "tipo": "llm",
+      "segundos": 3.35,
+      "tokens_in": 4297,
+      "tokens_out": 1209,
+      "ferramentas": [
+        "write_report"
+      ]
+    },
+    {
+      "t": 25.15,
+      "tipo": "ferramenta",
+      "nome": "write_report",
+      "args": "{\"titulo\": \"Relatório Executivo de Análise Financeira\", \"graficos\": [\"fornecedor\", \"categoria\", \"mes\"], \"corpo_markdown\": \"# Relatório Executivo - Análise Financeira\\nData de referência: 20:2026-10-20\\n\\n## Resumo Executivo\\n- O total geral de faturas válidas analisadas é de R$ 5.678,20, distribuída…",
+      "ok": true,
+      "segundos": 0.1,
+      "resultado": "{\"arquivos\": [\"relatorio_executivo.md\", \"relatorio_executivo.docx\"], \"palavras\": 390, \"verificacao\": \"ok: todos os valores em R$ citados conferem com os dados.\"}"
+    },
+    {
+      "t": 27.08,
+      "tipo": "llm",
+      "segundos": 1.93,
+      "tokens_in": 5567,
+      "tokens_out": 371,
+      "ferramentas": []
+    },
+    {
+      "t": 29.28,
+      "tipo": "revisao",
+      "segundos": 2.2,
+      "aprovado": true,
+      "problemas": []
+    }
+  ]
+}

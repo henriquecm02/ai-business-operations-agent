@@ -115,6 +115,10 @@ streamlit run app/streamlit_app.py
 
 Dois modos: **Nova execução** (roda o agente e acompanha cada passo ao vivo) e **Ver execução salva**, que reabre qualquer `execucao.json` de `examples/` ou `runs/` com indicadores, gráficos, alertas, relatório e trace, **sem precisar de chave de API**.
 
+![Dashboard do agente](docs/img/dashboard.png)
+
+> Captura do modo "Ver execução salva" com uma **execução real** do agente no Gemini (`gemini-3.5-flash-lite`, 13 chamadas, 29 s), salva em [`examples/execucao_gemini/`](examples/execucao_gemini/). Ela fecha com o gabarito dos dados de demonstração: 15 faturas válidas somando R$ 5.678,20 e os 2 problemas plantados (a cobrança duplicada e o total divergente), sem falso alerta. É uma única execução, não um benchmark; os números medidos estão na seção de resultados.
+
 **Servidor MCP** (Claude Desktop, Claude Code ou qualquer cliente MCP)
 
 ```json

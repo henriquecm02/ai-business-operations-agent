@@ -26,6 +26,14 @@ PROBLEMS = {"duplicada": "Cobrança duplicada", "total_divergente": "Total ≠ s
             "cnpj_formato_invalido": "CNPJ inválido", "vencimento_antes_da_emissao": "Vencimento antes da emissão"}
 
 st.set_page_config(page_title="Agente de Operações", page_icon="🗂️", layout="wide")
+# Os valores em R$ eram cortados ("R$ 5.67…") com a barra lateral aberta em telas de notebook.
+st.markdown(
+    "<style>[data-testid='stMetricValue']{font-size:1.65rem}"
+    "[data-testid='stMetricValue'] div{overflow:visible;text-overflow:clip}"
+    "[data-testid='stMetricLabel'] p{white-space:normal}"
+    "[data-testid='stMetricDelta'],[data-testid='stMetricDelta'] div"
+    "{white-space:normal;overflow:visible;text-overflow:clip}</style>",
+    unsafe_allow_html=True)
 
 
 def saved_runs() -> list[Path]:
@@ -54,7 +62,7 @@ def render(data: dict, folder: Path) -> None:
             ("Vencido", brl(a["vencidos"]["total"]), f"{len(a['vencidos']['itens'])} faturas",
              bool(a["vencidos"]["total"])),
             (f"Vence em {prox['horizonte_dias']} dias", brl(prox["total"]), f"{len(prox['itens'])} faturas", False),
-            ("Pagamento indevido evitado", brl(evitado), "duplicatas + divergências", False),
+            ("Pagamento indevido evitado", brl(evitado), "duplicata + divergência", False),
             ("Alertas", str(len(alerts)), "exigem atenção humana", bool(alerts)),
         ]):
             col.metric(label, value, sub, delta_color="inverse" if warn else "off", delta_arrow="off")
