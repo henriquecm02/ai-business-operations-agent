@@ -1,0 +1,96 @@
+{
+  "documentos": 6,
+  "campos_ok": 37,
+  "campos": 46,
+  "detalhes": [
+    {
+      "arquivo": "escaneada_NF-20260050.pdf",
+      "metodo": "ocr",
+      "qualidade": {
+        "rotacao": 0.4,
+        "ruido": 6,
+        "dpi": 200
+      },
+      "campos_ok": 9,
+      "campos": 9,
+      "faltando": [],
+      "segundos": 1.4
+    },
+    {
+      "arquivo": "escaneada_NF-20260051.pdf",
+      "metodo": "ocr",
+      "qualidade": {
+        "rotacao": -0.9,
+        "ruido": 10,
+        "dpi": 200
+      },
+      "campos_ok": 8,
+      "campos": 8,
+      "faltando": [],
+      "segundos": 1.0
+    },
+    {
+      "arquivo": "escaneada_NF-20260052.pdf",
+      "metodo": "ocr",
+      "qualidade": {
+        "rotacao": 1.6,
+        "ruido": 14,
+        "dpi": 150
+      },
+      "campos_ok": 7,
+      "campos": 7,
+      "faltando": [],
+      "segundos": 1.1
+    },
+    {
+      "arquivo": "escaneada_NF-20260053.pdf",
+      "metodo": "ocr",
+      "qualidade": {
+        "rotacao": 0.0,
+        "ruido": 22,
+        "dpi": 150
+      },
+      "campos_ok": 7,
+      "campos": 7,
+      "faltando": [],
+      "segundos": 1.0
+    },
+    {
+      "arquivo": "escaneada_NF-20260054.pdf",
+      "metodo": "ocr",
+      "qualidade": {
+        "rotacao": 3.0,
+        "ruido": 30,
+        "dpi": 100
+      },
+      "campos_ok": 6,
+      "campos": 8,
+      "faltando": [
+        "cnpj",
+        "vencimento"
+      ],
+      "segundos": 1.1
+    },
+    {
+      "arquivo": "escaneada_NF-20260055.pdf",
+      "metodo": "ocr",
+      "qualidade": {
+        "rotacao": -2.5,
+        "ruido": 40,
+        "dpi": 100
+      },
+      "campos_ok": 0,
+      "campos": 7,
+      "faltando": [
+        "numero",
+        "cnpj",
+        "fornecedor",
+        "emissao",
+        "vencimento",
+        "total",
+        "subtotal_item_1"
+      ],
+      "segundos": 36.0
+    }
+  ]
+}

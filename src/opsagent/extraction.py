@@ -12,7 +12,7 @@ from datetime import date
 from pathlib import Path
 from typing import Any
 
-from .documents import read_text
+from .documents import read_text_with_method
 from .llm import LLM, QuotaExceeded, Usage
 from .prompts import load_prompt
 
@@ -134,25 +134,27 @@ BATCH_SCHEMA: dict[str, Any] = {
 QTY_PREFIX = re.compile(r"^\s*\d+(?:[.,]\d+)?\s*[xX×]\s+")
 
 
-def _finish(data: dict, name: str, truncated: bool) -> dict:
+def _finish(data: dict, name: str, truncated: bool, metodo: str = "texto") -> dict:
     data.setdefault("itens", [])
     for it in data["itens"]:  # "10x Alface" -> "Alface" (a quantidade já está no campo próprio)
         it["descricao"] = QTY_PREFIX.sub("", it.get("descricao") or "").strip()
     data["arquivo"] = name
-    data["problemas"] = validate(data) + (["texto_truncado"] if truncated else [])
+    data["problemas"] = validate(data) + (["texto_truncado"] if truncated else []) + (["lido_por_ocr"] if metodo == "ocr" else [])
+    data["leitura"] = metodo
     return data
 
 
 def extract_one(llm: LLM, path: Path) -> tuple[dict, Usage]:
-    text = read_text(path)
+    text, metodo = read_text_with_method(path)
     prompt = f"Arquivo: {path.name}\n\n<documento>\n{text[:MAX_CHARS]}\n</documento>"
     data, usage = llm.json(load_prompt("extract"), prompt, SCHEMA)
-    return _finish(data, path.name, len(text) > MAX_CHARS), usage
+    return _finish(data, path.name, len(text) > MAX_CHARS, metodo), usage
 
 
 def extract_batch(llm: LLM, paths: list[Path]) -> tuple[list[dict], Usage, list[dict]]:
     """Vários documentos em uma única chamada; devolve um registro por arquivo enviado."""
-    texts = {p.name: read_text(p) for p in paths}
+    lidos = {p.name: read_text_with_method(p) for p in paths}
+    texts = {n: t for n, (t, _) in lidos.items()}
     blocks = "\n\n".join(f'<documento arquivo="{n}">\n{t[:MAX_CHARS]}\n</documento>' for n, t in texts.items())
     prompt = (f"Extraia os {len(texts)} documentos abaixo. Devolva exatamente um item em `documentos` por "
               f"arquivo, com o campo `arquivo` igual ao atributo do documento.\n\n{blocks}")
@@ -161,7 +163,7 @@ def extract_batch(llm: LLM, paths: list[Path]) -> tuple[list[dict], Usage, list[
     records, errors = [], []
     for name, text in texts.items():
         if name in got:
-            records.append(_finish(got[name], name, len(text) > MAX_CHARS))
+            records.append(_finish(got[name], name, len(text) > MAX_CHARS, lidos[name][1]))
         else:
             errors.append({"arquivo": name, "erro": "documento ausente na resposta do modelo"})
     return records, usage, errors

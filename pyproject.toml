@@ -22,7 +22,8 @@ dependencies = [
 [project.optional-dependencies]
 ui = ["streamlit>=1.35"]
 mcp = ["mcp>=2"]
-dev = ["pytest>=8", "reportlab>=4"]
+ocr = ["pytesseract>=0.3", "pdf2image>=1.17"]
+dev = ["pytest>=8", "reportlab>=4", "numpy>=1.26", "pytesseract>=0.3", "pdf2image>=1.17"]
 
 [project.scripts]
 opsagent = "opsagent.cli:main"

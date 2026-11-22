@@ -122,11 +122,29 @@ def _add_rich(paragraph, text: str) -> None:
         run.bold = i % 2 == 1
 
 
-def write_email_draft(to: str, subject: str, body: str, attachments: list[Path], path: Path) -> Path:
+def build_email(to: str, subject: str, body: str, attachments: list[Path],
+                sender: str = "agente@exemplo.invalid") -> EmailMessage:
     msg = EmailMessage()
-    msg["To"], msg["Subject"], msg["From"] = to, subject, "agente@exemplo.invalid"
+    msg["To"], msg["Subject"], msg["From"] = to, subject, sender
     msg.set_content(body)
     for a in attachments:
         msg.add_attachment(a.read_bytes(), maintype="application", subtype="octet-stream", filename=a.name)
-    path.write_bytes(bytes(msg))
+    return msg
+
+
+def write_email_draft(to: str, subject: str, body: str, attachments: list[Path], path: Path,
+                      sender: str = "agente@exemplo.invalid") -> Path:
+    path.write_bytes(bytes(build_email(to, subject, body, attachments, sender)))
     return path
+
+
+def send_smtp(msg: EmailMessage, host: str, port: int, user: str | None, password: str | None) -> None:
+    """Envio real por SMTP com STARTTLS. Só é chamado depois da aprovação humana (send_email é sensível)."""
+    import smtplib
+    import ssl
+
+    with smtplib.SMTP(host, port, timeout=30) as smtp:
+        smtp.starttls(context=ssl.create_default_context())
+        if user:
+            smtp.login(user, password or "")
+        smtp.send_message(msg)

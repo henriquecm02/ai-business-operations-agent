@@ -34,12 +34,39 @@ class Workspace:
         ]
 
 
-def read_text(path: Path) -> str:
+MIN_CHARS_TEXTO = 30  # abaixo disso, o PDF é tratado como imagem (escaneado)
+
+
+class OCRIndisponivel(RuntimeError):
+    """PDF escaneado, mas o OCR não está instalado."""
+
+
+def _ocr_pdf(path: Path) -> str:
+    try:
+        import pytesseract
+        from pdf2image import convert_from_path
+    except ImportError as e:
+        raise OCRIndisponivel(
+            f"{path.name} parece escaneado (sem texto embutido). Instale o extra de OCR: "
+            "pip install -e '.[ocr]' e o Tesseract com o idioma português (tesseract-ocr-por)."
+        ) from e
+    try:
+        paginas = convert_from_path(str(path), dpi=300)
+        return "\n".join(pytesseract.image_to_string(img, lang="por", config="--psm 6") for img in paginas)
+    except Exception as e:  # binários do poppler/tesseract ausentes
+        raise OCRIndisponivel(f"Falha no OCR de {path.name}: {type(e).__name__}: {e}") from e
+
+
+def read_text_with_method(path: Path) -> tuple[str, str]:
+    """Devolve (texto, método). Método: "texto" (embutido no arquivo) ou "ocr" (PDF escaneado)."""
     suffix = path.suffix.lower()
     if suffix == ".pdf":
         from pypdf import PdfReader
 
-        return "\n".join((page.extract_text() or "") for page in PdfReader(str(path)).pages)
+        texto = "\n".join((page.extract_text() or "") for page in PdfReader(str(path)).pages)
+        if len(texto.strip()) >= MIN_CHARS_TEXTO:
+            return texto, "texto"
+        return _ocr_pdf(path), "ocr"
     if suffix == ".docx":
         from docx import Document
 
@@ -48,7 +75,11 @@ def read_text(path: Path) -> str:
         for table in d.tables:
             for row in table.rows:
                 parts.append(" | ".join(c.text for c in row.cells))
-        return "\n".join(parts)
+        return "\n".join(parts), "texto"
     if suffix in (".txt", ".md"):
-        return path.read_text(encoding="utf-8", errors="replace")
+        return path.read_text(encoding="utf-8", errors="replace"), "texto"
     raise ValueError(f"Formato não suportado: {suffix}")
+
+
+def read_text(path: Path) -> str:
+    return read_text_with_method(path)[0]

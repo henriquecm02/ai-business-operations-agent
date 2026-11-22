@@ -1,0 +1,182 @@
+{
+  "escaneada_NF-20260050.pdf": {
+    "tipo": "fatura",
+    "numero": "NF-20260050",
+    "fornecedor": "Embalagens Prisma Ltda",
+    "cnpj": "00.733.120/0001-90",
+    "categoria": "embalagens",
+    "data_emissao": "2026-10-04",
+    "vencimento": "2026-11-01",
+    "itens": [
+      {
+        "descricao": "Sacola papel (pct 100)",
+        "quantidade": 10,
+        "preco_unitario": 47.5,
+        "subtotal": 475.0
+      },
+      {
+        "descricao": "Caixa kraft M (pct 50)",
+        "quantidade": 10,
+        "preco_unitario": 64.0,
+        "subtotal": 640.0
+      },
+      {
+        "descricao": "Copo 300ml (pct 100)",
+        "quantidade": 9,
+        "preco_unitario": 29.9,
+        "subtotal": 269.1
+      }
+    ],
+    "valor_total": 1384.1,
+    "qualidade": {
+      "rotacao": 0.4,
+      "ruido": 6,
+      "dpi": 200
+    },
+    "problemas_esperados": [
+      "lido_por_ocr"
+    ]
+  },
+  "escaneada_NF-20260051.pdf": {
+    "tipo": "fatura",
+    "numero": "NF-20260051",
+    "fornecedor": "TecnoPonto Sistemas",
+    "cnpj": "00.950.473/0001-18",
+    "categoria": "software",
+    "data_emissao": "2026-10-19",
+    "vencimento": "2026-11-02",
+    "itens": [
+      {
+        "descricao": "Suporte técnico mensal",
+        "quantidade": 1,
+        "preco_unitario": 120.0,
+        "subtotal": 120.0
+      },
+      {
+        "descricao": "Licença PDV mensal",
+        "quantidade": 1,
+        "preco_unitario": 189.9,
+        "subtotal": 189.9
+      }
+    ],
+    "valor_total": 309.9,
+    "qualidade": {
+      "rotacao": -0.9,
+      "ruido": 10,
+      "dpi": 200
+    },
+    "problemas_esperados": [
+      "lido_por_ocr"
+    ]
+  },
+  "escaneada_NF-20260052.pdf": {
+    "tipo": "fatura",
+    "numero": "NF-20260052",
+    "fornecedor": "TecnoPonto Sistemas",
+    "cnpj": "00.950.473/0001-18",
+    "categoria": "software",
+    "data_emissao": "2026-10-01",
+    "vencimento": "2026-10-22",
+    "itens": [
+      {
+        "descricao": "Licença PDV mensal",
+        "quantidade": 1,
+        "preco_unitario": 189.9,
+        "subtotal": 189.9
+      }
+    ],
+    "valor_total": 189.9,
+    "qualidade": {
+      "rotacao": 1.6,
+      "ruido": 14,
+      "dpi": 150
+    },
+    "problemas_esperados": [
+      "lido_por_ocr"
+    ]
+  },
+  "escaneada_NF-20260053.pdf": {
+    "tipo": "fatura",
+    "numero": "NF-20260053",
+    "fornecedor": "Limpeza Total Serviços",
+    "cnpj": "00.218.664/0001-31",
+    "categoria": "servicos",
+    "data_emissao": "2026-10-04",
+    "vencimento": "2026-10-25",
+    "itens": [
+      {
+        "descricao": "Higienização de coifa",
+        "quantidade": 1,
+        "preco_unitario": 650.0,
+        "subtotal": 650.0
+      }
+    ],
+    "valor_total": 650.0,
+    "qualidade": {
+      "rotacao": 0.0,
+      "ruido": 22,
+      "dpi": 150
+    },
+    "problemas_esperados": [
+      "lido_por_ocr"
+    ]
+  },
+  "escaneada_NF-20260054.pdf": {
+    "tipo": "fatura",
+    "numero": "NF-20260054",
+    "fornecedor": "Limpeza Total Serviços",
+    "cnpj": "00.218.664/0001-31",
+    "categoria": "servicos",
+    "data_emissao": "2026-10-07",
+    "vencimento": "2026-11-04",
+    "itens": [
+      {
+        "descricao": "Higienização de coifa",
+        "quantidade": 1,
+        "preco_unitario": 650.0,
+        "subtotal": 650.0
+      },
+      {
+        "descricao": "Limpeza semanal",
+        "quantidade": 1,
+        "preco_unitario": 480.0,
+        "subtotal": 480.0
+      }
+    ],
+    "valor_total": 1130.0,
+    "qualidade": {
+      "rotacao": 3.0,
+      "ruido": 30,
+      "dpi": 100
+    },
+    "problemas_esperados": [
+      "lido_por_ocr"
+    ]
+  },
+  "escaneada_NF-20260055.pdf": {
+    "tipo": "fatura",
+    "numero": "NF-20260055",
+    "fornecedor": "Gás Rápido Distribuidora",
+    "cnpj": "00.364.285/0001-76",
+    "categoria": "utilidades",
+    "data_emissao": "2026-10-17",
+    "vencimento": "2026-10-24",
+    "itens": [
+      {
+        "descricao": "Taxa de entrega",
+        "quantidade": 1,
+        "preco_unitario": 25.0,
+        "subtotal": 25.0
+      }
+    ],
+    "valor_total": 25.0,
+    "qualidade": {
+      "rotacao": -2.5,
+      "ruido": 40,
+      "dpi": 100
+    },
+    "problemas_esperados": [
+      "lido_por_ocr"
+    ]
+  }
+}

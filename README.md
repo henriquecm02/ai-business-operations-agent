@@ -166,18 +166,37 @@ demo/              gerador de documentos sintéticos e ground truth
 tests/             testes offline
 ```
 
+## Documentos escaneados e envio real de e-mail
+
+**OCR.** Quando um PDF não tem texto embutido (menos de 30 caracteres), ele é convertido em imagem a 300 dpi e lido pelo Tesseract em português. O texto chega ao modelo do mesmo jeito, mas a extração marca o documento com `lido_por_ocr`, e a leitura avisa o agente para conferir números e CNPJ no original. Sem o Tesseract instalado, o erro diz exatamente o que instalar.
+
+Para medir o OCR sem LLM, `demo/generate_scanned.py` gera 6 notas "escaneadas" (tons de cinza, rotação, ruído e resolução menor), e `bench/ocr_eval.py` confere quantos campos do gabarito aparecem no texto lido ([resultados](bench/results/ocr_escaneados.md)):
+
+| Qualidade do scan | Campos lidos corretamente |
+|---|---|
+| 200 dpi, rotação até 0,9°, pouco ruído (2 notas) | 17/17 |
+| 150 dpi, rotação até 1,6°, ruído médio (2 notas) | 14/14 |
+| 100 dpi, rotação de 3°, ruído alto | 6/8 (errou CNPJ e vencimento) |
+| 100 dpi, rotação de 2,5°, ruído muito alto | 0/7 |
+| **Total** | **37/46 (80,4%)** |
+
+Com scans de 150 dpi ou mais, todos os campos saem certos. Com 100 dpi e muito ruído, o OCR falha, e é por isso que o documento vem marcado para conferência.
+
+**E-mail.** `OPSAGENT_EMAIL_BACKEND=smtp` liga o envio real por SMTP com STARTTLS, configurado por `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASSWORD` e `SMTP_FROM` (veja `.env.example`). O padrão continua sendo `eml`, que só grava o arquivo. Nos dois modos, `send_email` segue como ação sensível: nada sai sem aprovação humana, e uma cópia `.eml` fica sempre na pasta de saída. O envio foi testado com um servidor SMTP falso, não com uma conta real.
+
 ## Limitações
 
-- PDFs escaneados (imagem) não são suportados: a leitura usa texto embutido. OCR é o próximo passo.
-- O envio de e-mail é simulado (gera um `.eml`). Integração real com Gmail fica atrás da aprovação humana.
+- O OCR falha em scans de baixa resolução (100 dpi com muito ruído). PDFs com várias páginas escaneadas são lidos página a página, sem reconstruir tabelas.
+- A extração de notas escaneadas pelo Gemini ainda não foi medida, só a leitura pelo OCR. Ela depende de uma chave de API.
 - Os dados de demonstração são sintéticos e pequenos (17 documentos). Os números do benchmark valem para esse conjunto.
 - O revisor é um LLM e pode deixar passar problemas. Na primeira execução real, ele aprovou um relatório com o mesmo fornecedor listado duas vezes (nomes escritos de formas diferentes). Corrigi agrupando por CNPJ, mas isso mostra por que as checagens críticas estão em código.
 
 ## Roadmap
 
-- [ ] OCR para documentos escaneados
+- [x] OCR para documentos escaneados
 - [ ] Integração com Google Drive (entrada) e Sheets (saída) via n8n
-- [ ] Envio real por Gmail com aprovação no próprio chat
+- [x] Envio real por e-mail (SMTP) com aprovação humana
+- [ ] Medir a extração do Gemini nas notas escaneadas
 - [ ] Avaliação do revisor com relatórios defeituosos plantados
 
 ---

@@ -6,6 +6,7 @@ corromper) centenas de valores ao gerar um entregável.
 """
 from __future__ import annotations
 
+import os
 from dataclasses import dataclass, field
 from datetime import date
 from pathlib import Path
@@ -13,7 +14,7 @@ from typing import Any, Callable
 
 from . import analysis as an
 from . import outputs as out
-from .documents import Workspace, read_text
+from .documents import Workspace, read_text_with_method
 from .extraction import extract_many
 from .llm import LLM, ToolSpec, Usage
 
@@ -55,9 +56,12 @@ def list_documents(s: Session, _: dict) -> dict:
 
 
 def read_document(s: Session, a: dict) -> dict:
-    text = read_text(s.workspace.input_path(a["nome"]))
+    text, metodo = read_text_with_method(s.workspace.input_path(a["nome"]))
     limit = 6000
-    return {"nome": a["nome"], "texto": text[:limit], "truncado": len(text) > limit}
+    res = {"nome": a["nome"], "texto": text[:limit], "truncado": len(text) > limit, "metodo": metodo}
+    if metodo == "ocr":
+        res["aviso"] = "texto obtido por OCR de um documento escaneado: confira números e CNPJ no original"
+    return res
 
 
 def extract_documents(s: Session, a: dict) -> dict:
@@ -149,9 +153,22 @@ def send_email(s: Session, a: dict) -> dict:
     if missing:
         return {"erro": f"Anexos inexistentes: {missing}"}
     p = s.workspace.output_path("email_" + a["assunto"][:40].replace(" ", "_").replace("/", "-") + ".eml")
-    out.write_email_draft(a["para"], a["assunto"], a["corpo"], attach, p)
+    backend = os.getenv("OPSAGENT_EMAIL_BACKEND", "eml").lower()
+    sender = os.getenv("SMTP_FROM", "agente@exemplo.invalid")
+    out.write_email_draft(a["para"], a["assunto"], a["corpo"], attach, p, sender)  # cópia sempre gravada
     s.add_output(p)
-    return {"status": "e-mail gerado na caixa de saída (modo demonstração: nenhum envio real)", "arquivo": p.name}
+    if backend != "smtp":
+        return {"status": "e-mail gerado na caixa de saída (modo demonstração: nenhum envio real)", "arquivo": p.name}
+    host = os.getenv("SMTP_HOST")
+    if not host:
+        return {"erro": "OPSAGENT_EMAIL_BACKEND=smtp, mas SMTP_HOST não está definido. O .eml foi gravado.",
+                "arquivo": p.name}
+    try:
+        out.send_smtp(out.build_email(a["para"], a["assunto"], a["corpo"], attach, sender), host,
+                      int(os.getenv("SMTP_PORT", "587")), os.getenv("SMTP_USER"), os.getenv("SMTP_PASSWORD"))
+    except Exception as e:  # falha de rede/credencial não derruba a execução: o agente informa
+        return {"erro": f"falha no envio por SMTP ({type(e).__name__}: {e}). O .eml foi gravado.", "arquivo": p.name}
+    return {"status": f"e-mail enviado por SMTP para {a['para']}", "arquivo": p.name}
 
 
 # --------------------------------------------------------------------------- registro
