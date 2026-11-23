@@ -12,6 +12,7 @@ from pathlib import Path
 import altair as alt
 import pandas as pd
 import streamlit as st
+import tema
 
 from opsagent.agent import Agent
 from opsagent.cli import DEFAULT_REQUEST
@@ -71,19 +72,19 @@ def render(data: dict, folder: Path) -> None:
         for col, title, series in [(c1, "Gasto por fornecedor", a["por_fornecedor"]),
                                    (c2, "Gasto por categoria", a["por_categoria"])]:
             with col:
-                st.markdown(f"##### {title}")
+                st.subheader(title)
                 df = pd.DataFrame({"nome": list(series), "valor": list(series.values())})
                 df["rotulo"] = df["valor"].map(brl)
-                bars = alt.Chart(df).mark_bar(color="#3b6fb6", cornerRadiusEnd=3).encode(
+                bars = alt.Chart(df).mark_bar(color=tema.cor(0), cornerRadiusEnd=4).encode(
                     x=alt.X("valor:Q", title=None, scale=alt.Scale(domain=[0, df["valor"].max() * 1.25]),
                             axis=alt.Axis(format=",.0f", labelExpr="'R$ ' + replace(datum.label, ',', '.')")),
                     y=alt.Y("nome:N", sort="-x", title=None, axis=alt.Axis(labelLimit=260)),
                     tooltip=[alt.Tooltip("nome:N", title=""), alt.Tooltip("rotulo:N", title="Total")])
-                text = bars.mark_text(align="left", dx=4, color="#555").encode(text="rotulo:N")
+                text = bars.mark_text(align="left", dx=6, color=tema.texto_secundario(), fontWeight=600).encode(text="rotulo:N")
                 st.altair_chart((bars + text).properties(height=34 * len(df) + 20), use_container_width=True)
 
         if alerts:
-            st.markdown("##### 🚨 Alertas")
+            st.subheader("🚨 Alertas")
             st.dataframe(pd.DataFrame([{
                 "Problema": PROBLEMS.get(x["problema"], x["problema"]), "Documento": x["arquivo"],
                 "Fornecedor": x.get("fornecedor"),
@@ -115,9 +116,12 @@ def render(data: dict, folder: Path) -> None:
                                    for e in steps]), hide_index=True, use_container_width=True)
 
 
-st.title("🗂️ Agente de Operações com IA")
-st.caption("Uma pasta de notas, faturas e contratos vira planilha, gráficos e relatório executivo, "
-           "com validação em código, revisor independente e aprovação humana.")
+tema.aplicar_tema(
+    "Agente de operações com IA",
+    "Uma pasta de notas, faturas e contratos vira planilha, gráficos e relatório executivo, com validação em código, "
+    "revisor independente e aprovação humana.",
+    kicker="Agente de IA · operações",
+    chips=["Gemini", "Function calling", "MCP", "OCR"])
 
 settings = Settings.from_env()
 runs = saved_runs()
